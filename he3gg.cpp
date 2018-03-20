@@ -35,7 +35,7 @@ int main()
                         registered_count.Fill(Q);
                 }
             }
-            Plot().Hist(registered_count*100./all_count)<<"set yrange [0:]"
+            Plot().Hist(registered_count*100./all_count)<<"set yrange [0:100]"
             <<"set ylabel 'Acceptance, percents'"<<"set xlabel 'Q, MeV'"
             <<"set title 'pd->3He 2gamma'";
         }
@@ -57,7 +57,7 @@ int main()
                     if(accepted)registered_count.Fill(Q);
                 }
             }
-            Plot().Hist(registered_count*100./all_count)<<"set yrange [0:]"
+            Plot().Hist(registered_count*100./all_count)<<"set yrange [0:100]"
             <<"set ylabel 'Acceptance, percents'"<<"set xlabel 'Q, MeV'"
             <<"set title 'pd->3He 6gamma'";
         }
