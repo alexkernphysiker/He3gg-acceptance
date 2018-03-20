@@ -81,22 +81,6 @@ double lambda(const double&x,const double&y,const double&z){
 }
 list<LorentzVector<>> ThreePi0Decay(const LorentzVector<>&eta){
 	while(true){
-		static PlotDistr1D<> 
-		mplot("6g","m_{eta}, GeV",BinsByCount(100,0.3,0.7)),
-		im1plot("6g","IM before, GeV",BinsByCount(100,0.3,0.7)),
-		im2plot("6g","IM after, GeV",BinsByCount(100,0.3,0.7)),
-		s1plot("6g","s1, GeV^2",BinsByCount(100,0.0,0.4)),
-		s2plot("6g","s2, GeV^2",BinsByCount(100,0.0,0.4)),
-		s3plot("6g","s3, GeV^2",BinsByCount(100,0.0,0.4)),
-		p1plot("6g","p1, GeV/c",BinsByCount(100,0.0,0.4)),
-		p2plot("6g","p2, GeV/c",BinsByCount(100,0.0,0.4)),
-		p3plot("6g","p3, GeV/c",BinsByCount(100,0.0,0.4)),
-		plplot("pl","",BinsByCount(100,-1.0,1.0));
-		static PlotDistr2D<>
-		s12plot("s1 vs s2",BinsByCount(100,0.0,0.4),BinsByCount(100,0.0,0.4)),
-		s13plot("s1 vs s3",BinsByCount(100,0.0,0.4),BinsByCount(100,0.0,0.4)),
-		s23plot("s2 vs s3",BinsByCount(100,0.0,0.4),BinsByCount(100,0.0,0.4));
-		mplot.Fill(eta.M());
 		const double M=eta.M(),s=M*M,m=Particle::pi0().mass();
 		const double smin=pow(m,2),smax=pow(M-m,2);
 		const RandomUniform<> s_distr(smin,smax);
@@ -119,19 +103,14 @@ list<LorentzVector<>> ThreePi0Decay(const LorentzVector<>&eta){
 		if(!isfinite(P1.M()))continue;
 		if(!isfinite(P2.M()))continue;
 		if(!isfinite(P3.M()))continue;
-		s1plot.Fill(s1);s2plot.Fill(s2);s3plot.Fill(s3);
-		s12plot.Fill(s1,s2);s13plot.Fill(s1,s3);s23plot.Fill(s2,s3);
-		p1plot.Fill(p1);p2plot.Fill(p2);p3plot.Fill(p3);
 		const RandomUniform<> TH(-PI<>(),PI<>());
 		const auto 
 		RR=randomIsotropic<3>().Rotations()*Rotation(direction(P1.P()),TH());
-		plplot.Fill(((RR*P1.P())^(RR*P2.P()))*(RR*P3.P()));
 		const vector<LorentzVector<>> pizeros={
 			lorentz_byPM(RR*P1.P(),P1.M()).Transform(-eta.Beta()),
 			lorentz_byPM(RR*P2.P(),P2.M()).Transform(-eta.Beta()),
 			lorentz_byPM(RR*P3.P(),P3.M()).Transform(-eta.Beta()),
 		};
-		im1plot.Fill((pizeros[0]+pizeros[1]+pizeros[2]).M());
 		auto G=LorentzVector<>::zero();
 		list<LorentzVector<>> output;
 		for(const auto PiP:pizeros){
@@ -143,7 +122,6 @@ list<LorentzVector<>> ThreePi0Decay(const LorentzVector<>&eta){
 			output.push_back(g2Pcm.Transform(-piframe));
 			G+=g1Pcm.Transform(-piframe)+g2Pcm.Transform(-piframe);
 		}
-		im2plot.Fill(G.M());
 		return output;
 	}
 }
