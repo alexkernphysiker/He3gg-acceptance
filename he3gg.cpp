@@ -13,7 +13,7 @@ int main()
 	const RandomValueTableDistr<>pf3=ReadPfFromFile("distributions/he3eta-pf-90-20.txt");
         const RandomUniform<> Pb_distr(p_beam_low,p_beam_hi); 
         const auto M_thr=Particle::he3().mass()+Particle::eta().mass();
-        const size_t ev_count=100000;
+        const size_t ev_count=1000000;
         {//3He 2gamma
             Distribution1D<> registered_count(BinsByStep(-70.,2.5,30.));
             Distribution1D<> all_count(BinsByStep(-70.,2.5,30.));
